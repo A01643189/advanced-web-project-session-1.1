@@ -25,11 +25,10 @@ export default function Home() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
             {movies.map((movie) => (
                 <MovieCard
-                    key={movie.id}
+                    id={movie.id}
                     title={movie.title}
-                    poster={`https://image.tmdb.org${movie.poster_path}`}
-                    rating={movie.vote_average}
-                />
+                    poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    rating={movie.vote_average}/>
             ))}
         </div>
     );
