@@ -5,11 +5,12 @@ import MovieCard from "../components/MovieCard.tsx";
 const TMDB_API_KEY = '9009a9c14a2a609e5050427ed142b099'
 const TMDB_API_URL = `https://api.themoviedb.org/3/trending/movie/day?api_key=${TMDB_API_KEY}`;
 
-interface Movie {
+export interface Movie {
     id: number;
     title: string;
     poster_path: string;
     vote_average: string;
+    overview: string;
 }
 
 export default function Home() {

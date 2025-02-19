@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import axios from "axios"
 import MovieCard from "../components/MovieCard"
+import { Movie } from "./Home"
 
 const TMDb_API_KEY = '9009a9c14a2a609e5050427ed142b099';
 const TMDb_API_URL = `https://api.themoviedb.org/3/search/movie`;
@@ -11,7 +12,7 @@ const TMDb_API_URL = `https://api.themoviedb.org/3/search/movie`;
 export default function Search() {
 
     const location = useLocation();
-    const [movies, setMovies] = useState<Array<{ id: number; title: string; poster_path: string; vote_average: number }>>([]);
+    const [movies, setMovies] = useState<Movie[]>([]);
 
     const query = new URLSearchParams(location.search).get('query');
 
