@@ -7,6 +7,9 @@ import Dashboard from './pages/Dashboard';
 import NavBar from './components/NavBar';
 import MovieDetails from './pages/MovieDetails';
 import Favorites from './pages/Favorites';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default () => {
     return (
@@ -16,10 +19,12 @@ export default () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/movie/:id" element={<MovieDetails />} />
                     <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
                 </Routes>
             </div>
         </>
