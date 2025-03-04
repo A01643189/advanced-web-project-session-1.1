@@ -20,7 +20,7 @@ export default () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute> }/> 
                     <Route path="/movie/:id" element={<MovieDetails />} />
                     <Route path="/favorites" element={<Favorites />} />
                     <Route path="/login" element={<Login />} />

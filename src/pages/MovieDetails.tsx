@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Movie } from "./Home";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { AuthContext } from "../context/AuthContext.tsx";
+import ReviewForm from "../components/ReviewForm.tsx";
+import { db } from "../config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const TMDb_API_KEY = "9009a9c14a2a609e5050427ed142b099";
 const TMDb_API_URL = `https://api.themoviedb.org/3/movie`;
@@ -10,8 +15,15 @@ const TMDb_API_URL = `https://api.themoviedb.org/3/movie`;
 export default function MovieDetails() {
     const { id } = useParams();
     const [movie, setMovie] = useState<Movie>();
+    const { setFavorite, favorites } = useContext(FavoritesContext);
+    const { user } = useContext(AuthContext);
 
-    const { setFavorite,favorites } = useContext(FavoritesContext);
+    const [reviews, setReviews] = useState<any[]>([]);
+
+    let reviewForm;
+    if (user) {
+        reviewForm = <ReviewForm movieId={parseInt(id ?? "-1")} />;
+    }
 
     console.log("Movie ID from useParams:", id); // Debugging
 
@@ -26,14 +38,42 @@ export default function MovieDetails() {
         }
     }, [id]);
 
+    // Fetch reviews for this movie
+    useEffect(() => {
+        if (id) {
+            const reviewsRef = collection(db, "reviews");
+            const q = query(reviewsRef, where("movieId", "==", parseInt(id ?? "-1")));
+
+            getDocs(q).then((snapshot) => {
+                setReviews(snapshot.docs.map((doc) => doc.data()));
+            });
+        }
+    }, [id]);
+
     if (!movie) return <p>Loading...</p>;
 
     let favButtonLabel = '';
-
     if (!favorites.has(movie.id)) {
         favButtonLabel = 'Add to Favorites';
     } else {
         favButtonLabel = 'Remove from Favorites';
+    }
+
+    let reviewDisplay;
+    if (reviews.length > 0) {
+        reviewDisplay = (
+            <div className="p-4">
+                <h1>Reviews</h1>
+                {reviews.map((r, index) => (
+                    <p key={index} style={{ textAlign: "right" }}>
+                        <strong>{r.review}</strong><br />
+                        by: {r.userName}
+                    </p>
+                ))}
+            </div>
+        );
+    } else {
+        reviewDisplay = <p>No reviews yet. Be the first to review!</p>;
     }
 
     return (
@@ -52,6 +92,10 @@ export default function MovieDetails() {
             >
                 {favButtonLabel}
             </button>
+            {reviewForm}
+            <br />
+            {reviewDisplay}
+            <br />
         </div>
     );
 }
