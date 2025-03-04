@@ -7,7 +7,7 @@ import { FavoritesContext, ContextProps } from "../context/FavoritesContext"; //
 import { AuthContext } from "../context/AuthContext.tsx";
 import ReviewForm from "../components/ReviewForm.tsx";
 import { db } from "../config/firebase";
-import { collection, query, where, getDocs, DocumentData } from "firebase/firestore";
+import { collection, query, where, getDocs} from "firebase/firestore";
 
 const LazyImage = lazy(() => import("../components/LazyImage"));
 
