@@ -3,7 +3,12 @@ import { db } from "../config/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { AuthContext } from "../context/AuthContext";
 
-export default function ReviewForm({ movieId }: { movieId: number }) {
+interface ReviewFormProps {
+    movieId: number;
+    movieTitle: string;  
+}
+
+export default function ReviewForm({ movieId, movieTitle }: ReviewFormProps) {
     const { user } = useContext(AuthContext);
     const [review, setReview] = useState("");
 
@@ -12,6 +17,7 @@ export default function ReviewForm({ movieId }: { movieId: number }) {
         if (user) {
             await addDoc(collection(db, "reviews"), {
                 movieId,
+                movieTitle, 
                 review,
                 userName: user.email,
                 userId: user.uid
